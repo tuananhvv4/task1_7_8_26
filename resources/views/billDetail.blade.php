@@ -1,6 +1,8 @@
 <header>
     <style href={{ URL::asset('/css/style.css') }}></style>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style-input.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
@@ -15,6 +17,14 @@
 
 <main>
 
+    <div id="loadingOverlay"
+        class="loading d-none w-100 h-100 d-flex justify-content-center align-items-center opacity-25 position-fixed top-0 end-0 bg-dark"
+        style="pointer-events: all; z-index: 9999;">
+        <div class="spinner-border text-white" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <span class="error"></span>
     <span class="success"></span>
 
@@ -28,14 +38,17 @@
                         Bill Detail
                     </div>
                     <div class="col-3">
-                        <div class="">
+                        <div class="input-group">
                             <select class="form-select inline-select text-white text-uppercase" aria-label=""
-                                id="status">
+                                id="status" disabled>
                                 @foreach ($states as $state)
                                     <option value={{ $state }} @selected($bill['status'] == $state)>
                                         {{ $state }}</option>
                                 @endforeach
                             </select>
+                            <span class="input-group-text input-afterfix d-none">
+                                <i class="fas fa-edit"></i>
+                            </span>
                         </div>
 
                     </div>
@@ -50,12 +63,15 @@
                 <div class="col-md-6 col-12 mt-2">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Account Number</span>
-                        <select class="form-select inline-select" aria-label="" id="account_number">
+                        <select class="form-select inline-select" aria-label="" id="account_number" disabled>
                             @foreach ($accountNumbers as $accountNumber)
                                 <option value={{ $accountNumber }} @selected($bill['account_number'] == $accountNumber)>
                                     {{ $accountNumber }}</option>
                             @endforeach
                         </select>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
 
                 </div>
@@ -63,8 +79,12 @@
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Order At</span>
                         <input type="date" class="form-control inline-date" name="ordered_at" id="ordered_at"
-                            value="{{ \Carbon\Carbon::parse($bill['ordered_at'])->format('Y-m-d') }}">
+                            value="{{ \Carbon\Carbon::parse($bill['ordered_at'])->format('Y-m-d') }}" disabled>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
+
                 </div>
             </div>
             <div class="row mt-4">
@@ -72,14 +92,20 @@
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Bill ID</span>
                         <input type="text" class="form-control inline-input" name="bill_id" id="bill_id"
-                            value={{ $bill['bill_id'] }}>
+                            value={{ $bill['bill_id'] }} disabled>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 mt-2">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Amount</span>
-                        <input type="text" class="form-control inline-input" name="amount" id="amount"
-                            value={{ $bill['amount'] }}>
+                        <input type="number" class="form-control inline-input" name="amount" id="amount"
+                            value={{ $bill['amount'] }} disabled>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -87,32 +113,42 @@
                 <div class="col-md-6 col-12 mt-2">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">Service</span>
-                        <select class="form-select inline-select" aria-label="" id="service">
+                        <select class="form-select inline-select" aria-label="" id="service" disabled>
                             @foreach ($services as $service)
                                 <option value="{{ $service }}" @selected($bill['service'] == $service)>
                                     {{ $service }}</option>
                             @endforeach
                         </select>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
 
                 </div>
                 <div class="col-md-6 col-12 mt-2">
                     <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1">Categorie</span>
-                        <select class="form-select inline-select" aria-label="" id="category">
+                        <span class="input-group-text" id="basic-addon1">Category</span>
+                        <select class="form-select inline-select" aria-label="" id="category" disabled>
                             @foreach ($categories as $category)
                                 <option value="{{ $category }}" @selected($bill['category'] == $category)>
                                     {{ $category }}</option>
                             @endforeach
                         </select>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
                     </div>
 
                 </div>
             </div>
 
-            <div class="form-floating mt-4">
-                <textarea class="form-control inline-input" placeholder="Leave a comment here" id="comment" style="height: 100px">{{ $bill['comment'] }}</textarea>
+            <div class="input-group form-floating mt-4">
+                <textarea class="form-control inline-input" placeholder="Leave a comment here" id="comment" style="height: 100px"
+                    disabled>{{ $bill['comment'] }}</textarea>
                 <label for="comment">Comments</label>
+                <span class="input-group-text input-afterfix d-none">
+                    <i class="fas fa-edit"></i>
+                </span>
             </div>
 
         </div>
@@ -125,46 +161,62 @@
 
 
 <script>
+    var allowSave = true;
     // Lưu giá trị cũ khi trang load
-    $('.inline-input, .inline-select , .inline-date').each(function() {
-        $(this).data('oldValue', $(this).val());
-    });
+    saveCurrentValue();
+
+    $(document).on('dblclick', '.input-group', function(e) {
+        $(this).find('.input-afterfix').addClass('d-none')
+        $(this).find('.inline-input, .inline-select, .inline-date').attr('disabled', null).focus();
+    })
+
+    $(document).on('mouseover', '.input-group', function(e) {
+        if ($(this).find('.inline-input, .inline-select, .inline-date').prop('disabled')) {
+            $(this).find('.input-afterfix').removeClass('d-none')
+        }
+    })
+    $(document).on('mouseout', '.input-group', function(e) {
+        $(this).find('.input-afterfix').addClass('d-none')
+    })
 
 
-    // $(document).on('keydown', '.inline-date', function(e) {
-    //     if (e.key === 'Enter') {
-    //         this.blur();
-    //     }
-    // });
-
-
-    // Enter -> blur (để kích hoạt lưu)
+    // unfocus -> save data
     $(document).on('keydown', '.inline-input', function(e) {
         if (e.key === 'Enter') {
             this.blur();
         }
     });
 
-    $(document).on('change', '.inline-date', function() {
-        const $e = $(this);
-        save($e);
-    });
-
     // khi blur
     $(document).on('blur', '.inline-input', function() {
         const $e = $(this);
+        $e.prop('disabled', true);
         save($e);
     });
 
-    $(document).on('change', '.inline-select', function() {
+    $(document).on('change blur', '.inline-select, .inline-date', function() {
         const $e = $(this);
+        $e.prop('disabled', true);
         save($e);
     });
 
+    // ajax update data
     function save($e) {
+
         const oldValue = String($e.data('oldValue') ?? '');
         const newValue = $.trim($e.val());
         if (newValue === oldValue) {
+            return;
+        }
+        $('#loadingOverlay').removeClass('d-none');
+        if (!allowSave) {
+            $e.val(oldValue);
+            setTimeout(
+                () => {
+                    $('.error').text('')
+                },
+                2000
+            )
             return;
         }
         const id = $('#id').val();
@@ -189,6 +241,49 @@
                 $('.error').text(xhr.responseText);
             },
         });
+        $('#loadingOverlay').addClass('d-none');
+
+        saveCurrentValue();
+    }
+
+
+    // Kiểm tra bill_id
+    $('#bill_id').on('keyup change', function() {
+        var billId = $(this).val();
+        var excludeId = $('input[name="id"]').val() || '';
+        if (billId.length === 0) {
+            $('.error').text('');
+            return;
+        }
+        $.ajax({
+            url: '{{ route('bill.check') }}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                bill_id: billId,
+                exclude_id: excludeId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (!response.success) {
+                    $('.error').text(response.message);
+                    allowSave = false;
+                } else {
+                    $('.error').text('');
+                    allowSave = true;
+                }
+            },
+            error: function() {
+                console.log('Error checking bill ID');
+            }
+        });
+    });
+
+    // Lưu giá trị cũ
+    function saveCurrentValue() {
+        $('.inline-input, .inline-select, .inline-date').each(function() {
+            $(this).data('oldValue', $(this).val());
+        });
     }
 
 
@@ -200,11 +295,11 @@
     };
 
     $('#status').on('change', function() {
-        const $sel = $(this);
-        $sel.removeClass().addClass('form-select inline-select text-uppercase');
-        const val = $sel.val();
+        const $e = $(this);
+        $e.removeClass().addClass('form-select inline-select text-uppercase');
+        const val = $e.val();
         if (statusClasses[val]) {
-            $sel.addClass(statusClasses[val]);
+            $e.addClass(statusClasses[val]);
         }
     }).trigger('change');
 </script>

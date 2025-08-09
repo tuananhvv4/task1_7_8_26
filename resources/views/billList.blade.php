@@ -116,27 +116,151 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalBody">
-                <p>Modal body text goes here.</p>
+                <p>Select Field To Update For Selected Bill</p>
+                <div class="update-content">
+
+                    <div class="row ">
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="account_number">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Account Number</span>
+                                <select class="form-select" aria-label="" id="account_number">
+                                    <option value=""></option>
+                                    @foreach ($accountNumbers as $accountNumber)
+                                        <option value={{ $accountNumber }}>
+                                            {{ $accountNumber }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="ordered_at">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Order At</span>
+                                <input type="date" class="form-control" name="ordered_at" id="ordered_at">
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="amount">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Amount</span>
+                                <input type="number" class="form-control" name="amount" id="amount">
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="status">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Status</span>
+                                <select class="form-select" aria-label="" id="status">
+                                    <option value=""></option>
+                                    @foreach ($states as $state)
+                                        <option>
+                                            {{ $state }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="service">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Service</span>
+                                <select class="form-select" aria-label="" id="service">
+                                    <option value=""></option>
+                                    @foreach ($services as $service)
+                                        <option>
+                                            {{ $service }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="col-12 mt-4">
+                            <div class="input-group">
+                                <div class="input-group-text mx-1">
+                                    <input class="check-input-update mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input" data-field="category">
+                                </div>
+                                <span class="input-group-text" id="basic-addon1">Category</span>
+                                <select class="form-select" aria-label="" id="category">
+                                    <option value=""></option>
+                                    @foreach ($categories as $category)
+                                        <option>
+                                            {{ $category }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-text input-afterfix d-none">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="input-group mt-4">
+                        <div class="input-group-text mx-1">
+                            <input class="check-input-update mt-0" type="checkbox" value=""
+                                aria-label="Checkbox for following text input" data-field="comment">
+                        </div>
+                        <div class="form-floating flex-grow-1">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="comment" style="height: 100px"></textarea>
+                            <label for="comment">Comment</label>
+                        </div>
+                        <span class="input-group-text input-afterfix d-none">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                    </div>
+
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-primary" id="massUpdateBtn">Update</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<script>
-    document.getElementById('btnOpenModal').addEventListener('click', function() {
-        // Pass bill id into modal
-
-        // Open modal
-        const modalElement = document.getElementById('myModal');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    });
-</script>
+<script></script>
 
 
 <script>
@@ -289,12 +413,23 @@
 
         $("#selectAll").on("change", function() {
             var checked = $(this).prop("checked");
-            table.cells(null, 0).every(function() {
-                var cell = this.node();
-                $(cell)
-                    .find(".itemCheckbox")
-                    .prop("checked", checked);
+
+            // table.cells(null, 0).every(function() {
+            //     var cell = this.node();
+            //     $(cell)
+            //         .find(".itemCheckbox")
+            //         .prop("checked", checked);
+            // });
+
+            table.rows({
+                search: 'applied'
+            }).every(function() {
+                // Lấy ô ở cột 0 của từng hàng ( hàm cell() truyền vào hàng và cột cần xác định )
+                // node() lấy DOM element của element đã chọn
+                var cell = table.cell(this, 0).node();
+                $(cell).find(".itemCheckbox").prop("checked", checked);
             });
+
         });
 
         $(document).on("change", ".itemCheckbox", function() {
@@ -334,5 +469,66 @@
             });
         });
 
+        $(document).on('click', '#btnOpenModal', function() {
+            // Pass bill id into modal
+            var ids = [];
+            table.$('.itemCheckbox:checked').each(function() {
+                ids.push(this.id);
+            });
+            if (ids.length === 0) {
+                alert("No bills selected!");
+                return;
+            }
+            // Open modal
+            const modalElement = document.getElementById('myModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+
+        // mass update
+        $(document).on('click', '#massUpdateBtn', function() {
+            // Pass bill id 
+            var ids = [];
+            table.$('.itemCheckbox:checked').each(function() {
+                ids.push(this.id);
+            });
+            if (ids.length === 0) {
+                alert("No bills selected!");
+                return;
+            }
+
+            let dataField = {};
+            dataField['ids'] = ids;
+            dataField['_token'] = $('meta[name="csrf-token"]').attr('content');
+
+            console.log(dataField)
+
+            $(".check-input-update").each(function() {
+                if ($(this).prop('checked')) {
+                    var field = $(this).data('field');
+                    dataField[field] = $(`#${field}`).val();
+                }
+            })
+
+            $.ajax({
+                url: '{{ route('bill.massupdate') }}',
+                type: 'PATCH',
+                data: dataField,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message)
+                        location.reload();
+                    } else {
+                        alert(response.message)
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', xhr.responseText);
+                    $('.error').text(xhr.responseText);
+                },
+            });
+
+        });
     });
 </script>

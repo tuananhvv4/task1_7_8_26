@@ -120,6 +120,19 @@ class BillController extends Controller
     {
         try {
 
+            sleep(1);
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'amount' => 'numeric|min:0|max:999999',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    "success" => false,
+                    'message' => $validator->errors()->first()
+                ]);
+            }
+
             $bill = Bill::where('id', $id)->first();
 
             if (!$bill) {
@@ -159,6 +172,64 @@ class BillController extends Controller
             return response()->json([
                 "success" => true,
                 'message' => 'Edit bill success!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function massUpdate(Request $request)
+    {
+        try {
+
+            if ($request->ids) {
+                $ids = $request->ids;
+
+                foreach ($ids as $id) {
+
+                    $bill = Bill::where('id', $id)->first();
+                    if (!$bill) {
+                        return response()->json([
+                            "success" => false,
+                            'message' => 'Bill ' . $id .  'not found!'
+                        ]);
+                    }
+
+                    if ($request->bill_id) {
+                        $bill->bill_id = $request->bill_id;
+                    }
+                    if ($request->amount) {
+                        $bill->amount = $request->amount;
+                    }
+                    if ($request->account_number) {
+                        $bill->account_number = $request->account_number;
+                    }
+                    if ($request->service) {
+                        $bill->service = $request->service;
+                    }
+                    if ($request->category) {
+                        $bill->category = $request->category;
+                    }
+                    if ($request->status) {
+                        $bill->status = $request->status;
+                    }
+                    if ($request->comment) {
+                        $bill->comment = $request->comment;
+                    }
+                    if ($request->ordered_at) {
+                        $bill->ordered_at = $request->ordered_at;
+                    }
+
+                    $bill->save();
+                }
+            }
+
+            return response()->json([
+                "success" => true,
+                'message' => 'Mass update bill success!'
             ]);
         } catch (\Exception $e) {
             return response()->json([

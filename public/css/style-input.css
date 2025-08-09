@@ -1,0 +1,16 @@
+
+
+.input-group {
+    box-sizing: border-box;
+    border: 1px solid transparent; /* tạo border sẵn nhưng trong suốt */
+}
+
+.input-group:hover{
+    border-color: rgb(47, 173, 246);
+    cursor: pointer;
+    border-radius: 5px;
+
+}
+
+
+

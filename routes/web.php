@@ -21,7 +21,8 @@ Route::get('/', function () {
 Route::prefix('/bill')->group(
     function () {
         Route::post('/archive', [BillController::class, 'archive'])->name('bill.archive');
-        Route::post("/checkBill", [BillController::class, 'checkBill'])->name('bill.check');
+        Route::post("/check-bill", [BillController::class, 'checkBill'])->name('bill.check');
+        Route::patch("/mass-update", [BillController::class, 'massUpdate'])->name('bill.massupdate');
     }
 );
 
