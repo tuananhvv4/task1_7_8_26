@@ -23,6 +23,7 @@ Route::prefix('/bill')->group(
         Route::post('/archive', [BillController::class, 'archive'])->name('bill.archive');
         Route::post("/check-bill", [BillController::class, 'checkBill'])->name('bill.check');
         Route::patch("/mass-update", [BillController::class, 'massUpdate'])->name('bill.massupdate');
+        Route::post('/filter', [BillController::class, 'filter'])->name('bill.filter');
     }
 );
 

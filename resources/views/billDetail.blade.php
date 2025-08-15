@@ -159,13 +159,30 @@
 
 </main>
 
+{{-- toast --}}
+<button type="button" class="btn btn-primary d-none" id="liveToastBtn"></button>
+
+<div class="toast-container position-fixed end-0 top-0 p-5">
+
+    <div id="liveToast" class="toast align-items-center bg-success" role="alert" aria-live="assertive"
+        aria-atomic="true" data-bs-delay="2000">
+        <div class="d-flex">
+            <div class="toast-body text-white">
+                Hello, world! This is a toast message.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 
 <script>
     var allowSave = true;
     // Lưu giá trị cũ khi trang load
     saveCurrentValue();
 
-    $(document).on('dblclick', '.input-group', function(e) {
+    $(document).on('click', '.input-group', function(e) {
         $(this).find('.input-afterfix').addClass('d-none')
         $(this).find('.inline-input, .inline-select, .inline-date').attr('disabled', null).focus();
     })
@@ -208,7 +225,7 @@
         if (newValue === oldValue) {
             return;
         }
-        $('#loadingOverlay').removeClass('d-none');
+        // $('#loadingOverlay').removeClass('d-none');
         if (!allowSave) {
             $e.val(oldValue);
             setTimeout(
@@ -230,10 +247,9 @@
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    alert(response.message)
-
+                    showToast(response.message)
                 } else {
-                    alert(response.message)
+                    showToast(response.message, 'bg-danger')
                 }
             },
             error: function(xhr, status, error) {
@@ -278,6 +294,17 @@
             }
         });
     });
+
+    function showToast(message, bgClass = 'bg-success', delay = 2000) {
+        const $toast = $('#liveToast');
+        $toast.removeClass('bg-success bg-danger bg-warning bg-info bg-primary bg-secondary bg-dark');
+        $toast.addClass(bgClass + ' text-white');
+        $toast.find('.toast-body').text(message);
+        new bootstrap.Toast($toast[0], {
+            delay
+        }).show();
+    }
+
 
     // Lưu giá trị cũ
     function saveCurrentValue() {

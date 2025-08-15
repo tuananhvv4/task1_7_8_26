@@ -29,6 +29,45 @@ class BillController extends Controller
         ]);
     }
 
+
+    /**
+     * Return a listing of the resource.
+     * JSON DATA 
+     * POST
+     */
+    public function filter(Request $request)
+    {
+        $query = Bill::query();
+
+
+        if ($request->ids) {
+            $query->whereIn('id', (array) $request->ids);
+        } else {
+            if ($request->filled('account_number')) {
+                $query->where('account_number', 'LIKE', '%' . $request->account_number . '%');
+            }
+
+            if ($request->filled('bill_id')) {
+                $query->where('bill_id', 'LIKE', '%' . $request->bill_id . '%');
+            }
+
+            if ($request->filled('service')) {
+                $query->where('service', 'LIKE', '%' . $request->service . '%');
+            }
+
+            if ($request->filled('category')) {
+                $query->where('category', 'LIKE', '%' . $request->category . '%');
+            }
+        }
+
+        $bills = $query->get();
+
+        return response()->json([
+            'data' => $bills
+        ]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -120,7 +159,7 @@ class BillController extends Controller
     {
         try {
 
-            sleep(1);
+            // sleep(1);
             // Validate the request
             $validator = Validator::make($request->all(), [
                 'amount' => 'numeric|min:0|max:999999',

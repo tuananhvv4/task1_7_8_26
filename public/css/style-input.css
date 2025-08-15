@@ -2,15 +2,62 @@
 
 .input-group {
     box-sizing: border-box;
-    border: 1px solid transparent; /* tạo border sẵn nhưng trong suốt */
+    border-radius: 5px;
+    border: none;
+    box-shadow: none;
 }
 
 .input-group:hover{
-    border-color: rgb(47, 173, 246);
+    /* border-color: rgb(47, 173, 246); */
     cursor: pointer;
+}
+
+.input-group .form-control {
+    border: none; 
+}
+
+.input-group .form-control:focus {
+    border: none; 
+    box-shadow: none; 
+}
+
+.form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none !important; /*vì đang dùng bootstrap nên mũi tên của select là background */
+}
+
+.input-group-table{
+    border: 1px solid lightgray;
     border-radius: 5px;
+}
+
+.input-group-table > .input-group {
+    border: none;
+    box-shadow: none;
+}
+
+.input-group-table:hover > button{
+    display: block;
 
 }
+
+.input-group-table button:focus,
+.input-group-table button:active{
+    outline: none !important;     /* bỏ outline đen */
+    box-shadow: none !important;
+
+}
+
+.input-group-table > button{
+    display: none;
+    background-color: transparent;
+    background-image: none !important;
+    border: none;
+    border-radius: 5px;
+}
+
 
 
 

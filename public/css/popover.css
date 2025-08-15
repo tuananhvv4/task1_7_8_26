@@ -1,0 +1,27 @@
+.filter-popover {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 10px;
+  background: rgb(236, 236, 236);
+  border-radius: 8px;
+  border: 1px solid gray;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.14);
+  min-width: 250px;
+  z-index: 2000;
+  font-size: 15px;
+}
+
+.popover-list {
+  background-color: white;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 17px;
+  padding: 8px;
+}
+.popover-list label {
+  cursor: pointer;
+}
+
+
+
